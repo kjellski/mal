@@ -27,6 +27,7 @@ clojure/.lein-repl-history
 fs/bin/*
 fs/obj/*
 fs/*.suo
+fs/.vs
 go/step*
 go/mal
 java/target/

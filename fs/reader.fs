@@ -9,16 +9,22 @@ module Reader =
             Regex.Matches(unparsed, tokenRegex)
             |> Seq.cast<Match>
             |> Seq.map (fun m -> m.Value.Trim())
+            |> Seq.filter(fun e -> e.Length > 0)
+            |> Seq.toList
         
         let mutable position = 0
 
         member this.next =
-            let token = parsed.nth position
+            let token = List.nth parsed position 
             position <- position + 1
             token
 
         member this.peek = 
-            parse[position]
+            List.nth parsed position 
             
         member this.all = 
             parsed
+
+        member this.printall = 
+            for token in this.all do
+                printf "%s" token

@@ -14,7 +14,9 @@ module Step1 =
     let READ (input :string) =
         if input.StartsWith("exit") then
             loop <- false
-            Console.WriteLine("Exitting... fare well...")
+            printf "Exitting... fare well..."
+        
+        let reader = Reader.Reader(input)
         input
 
     let EVAL sexp = sexp
@@ -24,10 +26,8 @@ module Step1 =
     
     let public REPL =
         while loop do
-            Console.Write "user> "
+            printf "user> "
             let input = Console.ReadLine()
-            let reader = Reader.Reader("(+ 1 2 (* 2 3))")
-            printf "%A" reader.all
             READ input
             |> EVAL 
             |> PRINT
