@@ -24,6 +24,9 @@ cs/*.dll
 cs/*.mdb
 clojure/target
 clojure/.lein-repl-history
+fs/bin/*
+fs/obj/*
+fs/*.suo
 go/step*
 go/mal
 java/target/
