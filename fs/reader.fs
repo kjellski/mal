@@ -1,17 +1,24 @@
 ﻿namespace mal.Reader
 open System.Text.RegularExpressions
 
-module public Reader =
+module Reader =
     type Reader(input :string) = 
         let tokenRegex = "[\s,]*(~@|[\[\]{}()'`~^@]|\"(?:\\.|[^\\\"])*\"|;.*|[^\s\[\]{}('\"`,;)]*)"
         let unparsed = input
+        let parsed = 
+            Regex.Matches(unparsed, tokenRegex)
+            |> Seq.cast<Match>
+            |> Seq.map (fun m -> m.Value.Trim())
         
+        let mutable position = 0
+
         member this.next =
-            unparsed
+            let token = parsed.nth position
+            position <- position + 1
+            token
+
         member this.peek = 
-            unparsed
+            parse[position]
             
         member this.all = 
-            Regex.Matches(input, tokenRegex)
-            |> Seq.cast<Match>
-            |> Seq.groupBy (fun m -> m.Value)
+            parsed
