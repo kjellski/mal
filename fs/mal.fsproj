@@ -48,10 +48,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <Compile Include="reader.fs" />
     <Compile Include="step0_repl.fs" />
     <Compile Include="step1_read_print.fs" />
     <Compile Include="Program.fs" />
+    <Compile Include="tokenizer.fs" />
+    <Compile Include="reader.fs" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
