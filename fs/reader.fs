@@ -15,16 +15,27 @@ module Reader =
         let mutable position = 0
 
         member this.next =
-            let token = List.nth parsed position 
+            let token = this.parsedAtPosition position
             position <- position + 1
             token
 
         member this.peek = 
-            List.nth parsed position 
+            this.parsedAtPosition position
             
+        member private this.parsedAtPosition pos = 
+            if parsed.Length > pos then
+                let token = parsed.Item pos 
+                Some(token)
+            else 
+                None
+
         member this.all = 
             parsed
 
         member this.printall = 
             for token in this.all do
                 printf "%s" token
+
+    let reader = Reader("(+ 1 2 (* 3 4))")
+    let read_form = 
+        ""
