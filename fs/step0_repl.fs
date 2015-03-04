@@ -1,4 +1,4 @@
-﻿namespace mal
+﻿namespace mal.Step0
 open System
 
 module Step0 = 

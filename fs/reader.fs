@@ -1,5 +1,7 @@
-﻿namespace mal.Reader
+﻿namespace mal.reader
 open System.Text.RegularExpressions
+open mal.matching.Matching
+open mal.types.Types
 
 module Reader =
     let tokenizer unparsed = 
@@ -38,9 +40,20 @@ module Reader =
 
     let testReader = Reader(tokenizer "(+ 1 2 (* 3 4))")
     
-    let read_form reader =
-        let readr = reader
-        None
+    let read_list (reader :Reader) = 
+        MalType()
 
+    let read_atom (reader :Reader) = 
+        MalType()
+
+    let read_form (reader :Reader) : MalType = 
+        let readr = reader
+        let token = reader.peek
+        match token with
+        | Some("(") -> read_list reader 
+        | Some(_) -> read_atom reader
+        | None -> MalType()
+        
     let read_str form = 
-        read_form ( Reader(tokenizer form) )
+        let token = tokenizer form
+        read_form(Reader(token))

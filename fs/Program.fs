@@ -1,4 +1,5 @@
-﻿namespace mal
+﻿namespace mal.Main
+open mal.Step1
 
 module Main =
     [<EntryPoint>]
