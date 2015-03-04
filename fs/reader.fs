@@ -41,16 +41,16 @@ module Reader =
     let testReader = Reader(tokenizer "(+ 1 2 (* 3 4))")
     
     let read_list (reader :Reader) = 
-        MalType()
+        MalList()
 
     let read_atom (reader :Reader) = 
-        MalType()
+        MalAtom()
 
     let read_form (reader :Reader) : MalType = 
         let readr = reader
         let token = reader.peek
         match token with
-        | Some("(") -> read_list reader 
+        | Some("(") -> read_list reader
         | Some(_) -> read_atom reader
         | None -> MalType()
         
