@@ -1,4 +1,6 @@
 ﻿namespace mal.Step1
+open System
+open mal.types.Types
 open mal.reader.Reader
 
 module Step1 =
@@ -13,7 +15,7 @@ module Step1 =
 
     let EVAL sexp = sexp
 
-    let PRINT (output :string) = 
+    let PRINT (output :MalType) = 
         System.Console.WriteLine output
     
     let public REPL =
