@@ -53,6 +53,7 @@
     <Compile Include="Reader.fs" />
     <Compile Include="step0_repl.fs" />
     <Compile Include="step1_read_print.fs" />
+    <Compile Include="step2_eval.fs" />
     <Compile Include="Program.fs" />
     <None Include="Scripts\load-references.fsx" />
     <None Include="Scripts\load-project.fsx" />

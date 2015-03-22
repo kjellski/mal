@@ -4,5 +4,5 @@ open mal.Step1
 module Main =
     [<EntryPoint>]
     let main argv = 
-        Step1.REPL
+        Step2.REPL
         0
