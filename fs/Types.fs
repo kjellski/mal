@@ -24,11 +24,13 @@ module Types =
 
     type MalAtomType =
         | Number of int
+        | String of string        
         | Variable of string
         | Operator of MalOperatorType
         override this.ToString() = 
             match this with
             | Number n -> string n
+            | String n -> "\"" + string n + "\""
             | Variable var -> var
             | Operator op -> op.ToString()
 
@@ -37,5 +39,5 @@ module Types =
         | MalAtom of MalAtomType
         override this.ToString() = 
            match this with 
-           | MalList list -> "( " + System.String.Join(", ", List.map string list) + " )"
+           | MalList list -> "(" + System.String.Join(" ", List.map string list) + ")"
            | MalAtom atom -> atom.ToString()

@@ -21,7 +21,10 @@ module Step1 =
     let public REPL =
         while loop do
             printf "user> "
-            let input = Console.ReadLine()
-            READ input
-            |> EVAL 
-            |> PRINT
+            try 
+                let input = Console.ReadLine()
+                READ input
+                |> EVAL 
+                |> PRINT
+            with
+            | error -> Console.WriteLine( string error )

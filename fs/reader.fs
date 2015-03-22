@@ -30,11 +30,18 @@ module Reader =
         member this.printall = 
             for token in this.all do
                 printf "%s" token
-
+                
+    let read_string (reader: Reader) : MalVal =
+        let string = 
+            match reader.peek with
+            | Some(str) -> str.Replace("\"", "")
+            | None -> ""
+        reader.next |> ignore 
+        string |> String |> MalAtom
+            
     let rec read_list (reader :Reader) : MalVal  = 
-        let mutable list = []
-        let token = reader.peek
-        match token with 
+        match reader.peek with 
+        | None -> failwith "Missing \")\""
         | Some(")") -> 
             reader.next |> ignore
             MalList []
@@ -43,17 +50,17 @@ module Reader =
             let (MalList rest) = read_list reader
             MalList (head::rest)
 
-    and read_atom (reader :Reader) : MalVal = 
-        match reader.next with 
+    and read_atom (reader: Reader) : MalVal = 
+        match reader.next with
+        | Some("\"") -> read_string reader
         | Some(num) when isNumber num -> Int32.Parse num |> Number |> MalAtom
         | Some(atom) when isAtom atom -> atom |> Variable |> MalAtom
         | Some(operator) when isOperator operator -> operator |> makeOperator |> Operator |> MalAtom
         | Some(fail) -> failwith ("Whoops! " + fail + " was unecpected.")
         | None -> failwith "The cake was a lie, nothing left."
 
-    and read_form (reader :Reader) : MalVal = 
-        let token = reader.peek
-        match token with
+    and read_form (reader: Reader) : MalVal = 
+        match reader.peek with
         | Some("(") -> 
             reader.next |> ignore
             read_list reader
