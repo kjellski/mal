@@ -6,7 +6,7 @@ open mal.reader.Reader
 module Step1 =
     let mutable loop = true
 
-    let READ (input :string) =
+    let READ (input: string) =
         if input.StartsWith("exit") then
             loop <- false
             printf "Exitting... fare well..."
@@ -15,7 +15,7 @@ module Step1 =
 
     let EVAL sexp = sexp
 
-    let PRINT (output :MalVal) = 
+    let PRINT (output: MalVal) = 
         System.Console.WriteLine output
     
     let public REPL =

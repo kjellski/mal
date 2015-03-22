@@ -47,6 +47,7 @@ module Reader =
         match reader.next with 
         | Some(num) when isNumber num -> Int32.Parse num |> Number |> MalAtom
         | Some(atom) when isAtom atom -> atom |> Variable |> MalAtom
+        | Some(operator) when isOperator operator -> operator |> makeOperator |> Operator |> MalAtom
         | Some(fail) -> failwith ("Whoops! " + fail + " was unecpected.")
         | None -> failwith "The cake was a lie, nothing left."
 
