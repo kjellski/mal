@@ -1,17 +1,10 @@
 ﻿namespace mal.reader
+open System
 open System.Text.RegularExpressions
 open mal.matching.Matching
 open mal.types.Types
 
-module Reader =
-    let tokenizer unparsed = 
-        let tokenRegex = "[\s,]*(~@|[\[\]{}()'`~^@]|\"(?:\\.|[^\\\"])*\"|;.*|[^\s\[\]{}('\"`,;)]*)"
-        Regex.Matches(unparsed, tokenRegex)
-        |> Seq.cast<Match>
-        |> Seq.map (fun m -> m.Value.Trim())
-        |> Seq.filter(fun e -> e.Length > 0)
-        |> Seq.toList
-    
+module Reader =    
     type Reader (tokens : List<string>) = 
         let _tokens = tokens        
         let mutable position = 0
@@ -38,22 +31,35 @@ module Reader =
             for token in this.all do
                 printf "%s" token
 
-    let testReader = Reader(tokenizer "(+ 1 2 (* 3 4))")
-    
-    let read_list (reader :Reader) = 
-        MalList()
+    let rec read_list (reader :Reader) : MalVal  = 
+        let mutable list = []
+        let token = reader.peek
+        match token with 
+        | Some(")") -> 
+            reader.next |> ignore
+            MalList []
+        | _ -> 
+            let head = read_form reader
+            let (MalList rest) = read_list reader
+            MalList (head::rest)
 
-    let read_atom (reader :Reader) = 
-        MalAtom()
+    and read_atom (reader :Reader) : MalVal = 
+        match reader.next with 
+        | Some(num) when isNumber num -> Int32.Parse num |> Number |> MalAtom
+        | Some(atom) when isAtom atom -> atom |> Variable |> MalAtom
+        | Some(fail) -> failwith ("Whoops! " + fail + " was unecpected.")
+        | None -> failwith "The cake was a lie, nothing left."
 
-    let read_form (reader :Reader) : MalType = 
-        let readr = reader
+    and read_form (reader :Reader) : MalVal = 
         let token = reader.peek
         match token with
-        | Some("(") -> read_list reader
+        | Some("(") -> 
+            reader.next |> ignore
+            read_list reader
         | Some(_) -> read_atom reader
-        | None -> MalType()
+        | None -> MalList []
         
     let read_str form = 
         let token = tokenizer form
-        read_form(Reader(token))
+        let ret = read_form(Reader(token))
+        ret

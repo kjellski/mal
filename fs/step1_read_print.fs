@@ -15,7 +15,7 @@ module Step1 =
 
     let EVAL sexp = sexp
 
-    let PRINT (output :MalType) = 
+    let PRINT (output :MalVal) = 
         System.Console.WriteLine output
     
     let public REPL =
